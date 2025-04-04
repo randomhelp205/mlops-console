@@ -1,239 +1,185 @@
-Here's a structured document that organizes all the actions from your policies according to the specified ML activities. I've carefully mapped every relevant permission while maintaining the original policy details.
+Here's a comprehensive document organizing all the actions from your policies according to the specified ML activities:
 
 ---
 
-# MLOps Console Access Policies - Categorized by ML Activity
+# MLOps IAM Policies - Action Categorization by ML Activity
 
 ## 1. Access Required AWS Services
-**Services:** S3, ECR, CloudWatch, EC2, KMS, Secrets Manager  
-**Permissions:**
-```json
-{
-  "S3": [
-    "s3:ListAllMyBuckets",
-    "s3:GetBucket*"
-  ],
-  "ECR": [
-    "ecr:ListImages",
-    "ecr:DescribeRepositories",
-    "ecr:ListTagsForResource"
-  ],
-  "EC2": [
-    "ec2:Describe*",
-    "ec2:List*"
-  ],
-  "KMS": [
-    "kms:DescribeKey",
-    "kms:Decrypt",
-    "kms:GenerateDataKey",
-    "kms:ListAliases"
-  ],
-  "SecretsManager": [
-    "secretsmanager:DescribeSecret",
-    "secretsmanager:GetSecretValue",
-    "secretsmanager:UpdateSecret",
-    "secretsmanager:PutSecretValue",
-    "secretsmanager:ListSecretVersionIds",
-    "secretsmanager:ListSecrets"
-  ]
-}
-```
+**Permissions to access Amazon S3, Amazon ECR, Amazon CloudWatch, and Amazon EC2**
+
+**S3 Actions**:
+- `s3:ListAllMyBuckets`
+- `s3:GetBucket*`
+- `s3:ListBucket` (implied by GetBucket*)
+
+**ECR Actions**:
+- `ecr:ListImages`
+- `ecr:DescribeRepositories`
+- `ecr:ListTagsForResource`
+
+**EC2 Actions**:
+- `ec2:Describe*`
+- `ec2:List*`
+
+**CloudWatch Actions**:
+- `events:Get*`
+- `events:List*`
+- `events:DisableRule`
+- `events:EnableRule`
+
+**KMS Actions**:
+- `kms:DescribeKey`
+- `kms:Decrypt`
+- `kms:GenerateDataKey`
+- `kms:ListAliases`
 
 ## 2. Run Studio Classic Applications
-**Permissions:**
-```json
-{
-  "StudioAccess": [
-    "sagemaker:CreatePresignedDomainUrl",
-    "sagemaker:ListDomains",
-    "sagemaker:ListUserProfiles",
-    "sagemaker:DescribeDomain",
-    "sagemaker:ListApps",
-    "sagemaker:DeleteApp"
-  ],
-  "Condition": "ResourceTag/Owner == ${aws:userid}"
-}
-```
+**Permissions to operate within a Studio Classic environment**
+
+- `sagemaker:CreatePresignedDomainUrl`
+- `sagemaker:ListDomains`
+- `sagemaker:ListUserProfiles`
+- `sagemaker:ListSpaces`
+- `sagemaker:ListApps`
+- `sagemaker:DescribeDomain`
+- `sagemaker:DescribeSpace`
+- `sagemaker:DeleteApp`
+- `sagemaker:DeleteSpace`
 
 ## 3. Manage ML Jobs
-**Permissions:**
-```json
-{
-  "JobManagement": [
-    "sagemaker:ListTrainingJobs",
-    "sagemaker:ListProcessingJobs",
-    "sagemaker:ListHyperParameterTuningJobs",
-    "sagemaker:ListTrainingJobsForHyperParameterTuningJob",
-    "sagemaker:ListTransformJobs",
-    "sagemaker:ListAutoMLJobs",
-    "sagemaker:DescribeProcessingJob",
-    "sagemaker:StopProcessingJob",
-    "sagemaker:DescribeTrainingJob",
-    "sagemaker:UpdateTrainingJob",
-    "sagemaker:StopTrainingJob",
-    "sagemaker:DescribeHyperParameterTuningJob",
-    "sagemaker:StopHyperParameterTuningJob",
-    "sagemaker:DescribeAutoMLJobV2",
-    "sagemaker:DescribeTransformJob",
-    "sagemaker:StopTransformJob"
-  ],
-  "Monitoring": [
-    "sagemaker:DeleteMonitoringSchedule",
-    "sagemaker:DescribeMonitoringSchedule",
-    "sagemaker:StartMonitoringSchedule",
-    "sagemaker:StopMonitoringSchedule",
-    "sagemaker:UpdateMonitoringAlert",
-    "sagemaker:UpdateMonitoringSchedule"
-  ],
-  "Condition": "ResourceTag/Owner == ${aws:userid}"
-}
-```
+**Permissions to audit, query lineage, and visualize experiments**
+
+- `sagemaker:ListTrainingJobs`
+- `sagemaker:ListProcessingJobs`
+- `sagemaker:ListHyperParameterTuningJobs`
+- `sagemaker:ListTrainingJobsForHyperParameterTuningJob`
+- `sagemaker:ListTransformJobs`
+- `sagemaker:ListCompilationJobs`
+- `sagemaker:ListLabelingJobs`
+- `sagemaker:ListAutoMLJobs`
+- `sagemaker:DescribeTrainingJob`
+- `sagemaker:UpdateTrainingJob`
+- `sagemaker:StopTrainingJob`
+- `sagemaker:DescribeProcessingJob`
+- `sagemaker:StopProcessingJob`
+- `sagemaker:DescribeHyperParameterTuningJob`
+- `sagemaker:StopHyperParameterTuningJob`
+- `sagemaker:DeleteHyperParameterTuningJob`
+- `sagemaker:DescribeTransformJob`
+- `sagemaker:StopTransformJob`
+- `sagemaker:DescribeCompilationJob`
+- `sagemaker:StopCompilationJob`
+- `sagemaker:DeleteCompilationJob`
+- `sagemaker:DescribeAutoMLJobV2`
+- `sagemaker:BatchPutMetrics`
+- `sagemaker:BatchGetMetrics`
 
 ## 4. Manage Models
-**Permissions:**
-```json
-{
-  "ModelOperations": [
-    "sagemaker:ListModels",
-    "sagemaker:DescribeModel",
-    "sagemaker:DeleteModel",
-    "sagemaker:ListModelCards",
-    "sagemaker:ListModelCardVersions",
-    "sagemaker:DescribeModelCard",
-    "sagemaker:DeleteModelCard",
-    "sagemaker:UpdateModelCard"
-  ],
-  "Inference": [
-    "sagemaker:ListEndpoints",
-    "sagemaker:ListEndpointConfigs",
-    "sagemaker:DescribeEndpoint",
-    "sagemaker:UpdateEndpoint",
-    "sagemaker:DeleteEndpoint",
-    "sagemaker:InvokeEndpoint",
-    "sagemaker:DescribeEndpointConfig",
-    "sagemaker:DeleteEndpointConfig"
-  ],
-  "Condition": "ResourceTag/Owner == ${aws:userid}"
-}
-```
+**Permissions to manage SageMaker AI jobs across their lifecycles**
+
+- `sagemaker:ListModels`
+- `sagemaker:ListModelCards`
+- `sagemaker:ListModelCardVersions`
+- `sagemaker:ListModelCardExportJobs`
+- `sagemaker:DescribeModel`
+- `sagemaker:DeleteModel`
+- `sagemaker:DescribeModelCard`
+- `sagemaker:UpdateModelCard`
+- `sagemaker:DeleteModelCard`
 
 ## 5. Manage Pipelines
-**Permissions:**
-```json
-{
-  "PipelineOperations": [
-    "sagemaker:ListPipeline*",
-    "sagemaker:QueryLineage",
-    "sagemaker:Search"
-  ]
-}
-```
+**Permissions to manage SageMaker pipelines and pipeline executions**
 
-## 6. Search and Visualize Experiments
-**Permissions:**
-```json
-{
-  "ExperimentVisualization": [
-    "sagemaker:ListExperiments",
-    "sagemaker:ListArtifacts",
-    "sagemaker:QueryLineage",
-    "sagemaker:Search",
-    "sagemaker:GetSearchSuggestions",
-    "sagemaker:BatchPutMetrics",
-    "sagemaker:BatchGetMetrics"
-  ]
-}
-```
+- `sagemaker:ListPipeline*`
+- `sagemaker:QueryLineage`
+- `sagemaker:Search`
+
+## 6. Search and visualize experiments
+**Permissions to audit, query lineage, and visualize SageMaker AI experiments**
+
+- `sagemaker:ListArtifacts`
+- `sagemaker:GetSearchSuggestions`
+- `sagemaker:QueryLineage`
+- `sagemaker:Search`
+- `sagemaker:ListTags*`
+- `sagemaker:AddTags`
+- `sagemaker:DeleteTags`
 
 ## 7. Manage Model Monitoring
-**Permissions:**
-```json
-{
-  "Monitoring": [
-    "sagemaker:DescribeModelBiasJobDefinition",
-    "sagemaker:DeleteModelBiasJobDefinition",
-    "sagemaker:DescribeDataQualityJobDefinition",
-    "sagemaker:DeleteDataQualityJobDefinition",
-    "sagemaker:DescribeModelExplainabilityJobDefinition",
-    "sagemaker:DeleteModelExplainabilityJobDefinition",
-    "sagemaker:DescribeModelQualityJobDefinition",
-    "sagemaker:DeleteModelQualityJobDefinition",
-    "sagemaker:DeleteMonitoringSchedule",
-    "sagemaker:DescribeMonitoringSchedule",
-    "sagemaker:StartMonitoringSchedule",
-    "sagemaker:StopMonitoringSchedule",
-    "sagemaker:UpdateMonitoringAlert",
-    "sagemaker:UpdateMonitoringSchedule"
-  ],
-  "Condition": "ResourceTag/Owner == ${aws:userid}"
-}
-```
+**Permissions to manage monitoring schedules for SageMaker AI Model Monitor**
+
+- `sagemaker:DeleteMonitoringSchedule`
+- `sagemaker:DescribeMonitoringSchedule`
+- `sagemaker:StartMonitoringSchedule`
+- `sagemaker:StopMonitoringSchedule`
+- `sagemaker:UpdateMonitoringAlert`
+- `sagemaker:UpdateMonitoringSchedule`
+- `sagemaker:DescribeModelBiasJobDefinition`
+- `sagemaker:DeleteModelBiasJobDefinition`
+- `sagemaker:DescribeDataQualityJobDefinition`
+- `sagemaker:DeleteDataQualityJobDefinition`
+- `sagemaker:DescribeModelExplainabilityJobDefinition`
+- `sagemaker:DeleteModelExplainabilityJobDefinition`
+- `sagemaker:DescribeModelQualityJobDefinition`
+- `sagemaker:DeleteModelQualityJobDefinition`
 
 ## 8. Amazon S3 Full Access
-**Permissions:**
-```json
-{
-  "S3FullAccess": [
-    "s3:ListAllMyBuckets",
-    "s3:GetBucket*"
-  ]
-}
-```
+**Permissions to perform Amazon S3 operations**
 
-## 9. SageMaker Canvas Core Access
-*Note: Specific Canvas permissions not explicitly found in provided policies*
+- `s3:ListAllMyBuckets`
+- `s3:GetBucket*`
 
-## 10. Use MLflow & Manage MLflow Tracking Servers
-**Permissions:**
-```json
-{
-  "MLflow": [
-    "sagemaker:ListMlflowTrackingServers",
-    "sagemaker:CreatePresignedMlflowTrackingServerUrl",
-    "sagemaker:DescribeMlflowTrackingServer",
-    "sagemaker:UpdateMlflowTrackingServer",
-    "sagemaker:DeleteMlflowTrackingServer"
-  ]
-}
-```
+## 9. Amazon S3 Bucket Access
+**Permissions to perform operations on specified Amazon S3 buckets**
 
-## 11. Run Studio EMR Serverless Applications
-*Note: Specific EMR Serverless permissions not explicitly found in provided policies*
+(Included in S3 Full Access above - no additional specific bucket actions in original policies)
 
-## Cross-Service Dependencies
-```json
-{
-  "Lambda": [
-    "lambda:CreateFunction",
-    "lambda:UpdateFunction*",
-    "lambda:DeleteFunction*",
-    "lambda:InvokeFunction",
-    "lambda:GetFunction*",
-    "lambda:ListFunctions"
-  ],
-  "StepFunctions": [
-    "states:CreateStateMachine",
-    "states:UpdateStateMachine",
-    "states:DeleteStateMachine",
-    "states:StartExecution",
-    "states:StopExecution"
-  ],
-  "Events": [
-    "events:Get*",
-    "events:List*",
-    "events:DisableRule",
-    "events:EnableRule"
-  ]
-}
-```
+## 10. SageMaker Canvas Core Access
+**Basic data prep, model build, validation**
 
-**Note:** 
-1. Tagging conditions (where present) are preserved from original policies
-2. Some Canvas/EMR Serverless permissions may need to be added as they weren't fully covered
-3. All actions are verbatim from your original policies
-4. I've maintained the original AWS permission syntax throughout
+(Not explicitly covered in original policies)
 
-Would you like me to:
-1. Add any missing service mappings?
-2. Provide this in a different format (CSV, Markdown table)?
-3. Highlight any potential permission gaps for your use cases?
+## 11. SageMaker Canvas Data Preparation
+**End-to-end data preparation in SageMaker Canvas**
+
+(Not explicitly covered in original policies)
+
+## 12. SageMaker Canvas MLOps
+**Deploy model to endpoint**
+
+- `sagemaker:CreateEndpoint`
+- `sagemaker:DescribeEndpoint`
+- `sagemaker:UpdateEndpoint`
+- `sagemaker:DeleteEndpoint`
+- `sagemaker:InvokeEndpoint`
+- `sagemaker:DescribeEndpointConfig`
+- `sagemaker:DeleteEndpointConfig`
+
+## 13. Use MLflow
+**Manage experiments, runs, and models in MLflow**
+
+- `sagemaker:ListMlflowTrackingServers`
+
+## 14. Manage MLflow Tracking Servers
+**Manage, start, and stop MLflow Tracking Servers**
+
+(Only listing permission in original policies - no management actions)
+
+## 15. Access required to AWS Services for MLflow
+**Permissions for MLflow Tracking Servers to access S3, Secrets Manager, and Model Registry**
+
+- `secretsmanager:DescribeSecret`
+- `secretsmanager:GetSecretValue`
+- `secretsmanager:UpdateSecret`
+- `secretsmanager:PutSecretValue`
+- `secretsmanager:ListSecretVersionIds`
+- `secretsmanager:ListSecrets`
+
+## 16. Run Studio EMR Serverless Applications
+**Create and Manage EMR Serverless Applications on Amazon SageMaker Studio**
+
+(Not explicitly covered in original policies)
+
+---
+
+**Note**: Some activities like SageMaker Canvas and EMR Serverless applications weren't explicitly covered in the original policies. The document includes all actions from the provided policies, organized according to your requested categories. For complete coverage of all listed activities, additional permissions might need to be added beyond what was in the original policies.
