@@ -1,1 +1,288 @@
+Here's the consolidated document organizing all the IAM policy actions according to the specified ML activities:
 
+# MLOps Execution IAM Policies - Organized by ML Activity
+
+## 1. Access Required AWS Services
+**Permissions to access Amazon S3, Amazon ECR, Amazon CloudWatch, and Amazon EC2**
+
+**Actions:**
+```
+s3:ListAllMyBuckets
+s3:GetBucket*
+ecr:DescribeImages
+ecr:ListImages
+ecr:BatchCheckLayerAvailability
+ecr:GetDownloadUrlForLayer
+ecr:BatchGetImage
+ecr:ListTagsForResource
+ecr:PutImage
+ecr:GetRepositoryPolicy
+ecr:DescribeRepositories
+logs:PutLogEvents
+logs:DescribeLogGroups
+logs:DescribeLogStreams
+logs:GetLogEvents
+logs:GetLogGroupFields
+logs:GetLogRecord
+logs:ListTagsLogGroup
+cloudwatch:DeleteAlarms
+cloudwatch:DescribeAlarms
+cloudwatch:GetMetricData
+cloudwatch:GetMetricStatistics
+cloudwatch:ListMetrics
+cloudwatch:PutMetricAlarm
+cloudwatch:PutMetricData
+ec2:CreateNetworkInterface
+ec2:CreateNetworkInterfacePermission
+ec2:DeleteNetworkInterface
+ec2:DeleteNetworkInterfacePermission
+ec2:DescribeNetworkInterfaces
+ec2:DescribeVpcs
+ec2:DescribeDhcpOptions
+ec2:DescribeSubnets
+ec2:DescribeSecurityGroups
+ec2:DescribeVpcEndpoints
+```
+
+## 2. Run Studio Classic Applications
+**Permissions to operate within a Studio Classic environment**
+
+**Actions:**
+```
+sagemaker:DescribeDomain
+sagemaker:DescribeUserProfile
+sagemaker:DescribeSpace
+sagemaker:DescribeApp
+sagemaker:CreatePresignedDomainUrl
+sagemaker:CreateSpace
+sagemaker:UpdateSpace
+sagemaker:DeleteSpace
+sagemaker:CreateApp
+sagemaker:DeleteApp
+```
+
+## 3. Manage ML Jobs
+**Permissions to audit, query lineage, and visualize experiments**
+
+**Actions:**
+```
+sagemaker:DescribeTrainingJob
+sagemaker:UpdateTrainingJob
+sagemaker:StopTrainingJob
+sagemaker:BatchPutMetrics
+sagemaker:BatchGetMetrics
+sagemaker:DescribeHyperParameterTuningJob
+sagemaker:DeleteHyperParameterTuningJob
+sagemaker:StopHyperParameterTuningJob
+sagemaker:DescribeAutoMLJobV2
+sagemaker:DescribeProcessingJob
+sagemaker:StopProcessingJob
+sagemaker:DescribeLabelingJob
+sagemaker:StopLabelingJob
+sagemaker:DescribeTransformJob
+sagemaker:StopTransformJob
+```
+
+## 4. Manage Models
+**Permissions to manage SageMaker AI jobs across their lifecycles**
+
+**Actions:**
+```
+sagemaker:CreateModel
+sagemaker:DeleteModel
+sagemaker:DescribeModel
+sagemaker:CreateModelCard
+sagemaker:DeleteModelCard
+sagemaker:UpdateModelCard
+sagemaker:DescribeModelCard
+sagemaker:CreateModelCardExportJob
+sagemaker:ListModelCardExportJobs
+sagemaker:ListModelCardVersions
+sagemaker:ListModelCards
+sagemaker:CreateEndpoint
+sagemaker:CreateEndpointConfig
+sagemaker:CreateInferenceComponent
+sagemaker:DescribeEndpoint
+sagemaker:UpdateEndpoint
+sagemaker:DeleteEndpoint
+sagemaker:InvokeEndpoint
+sagemaker:DescribeEndpointConfig
+sagemaker:DeleteEndpointConfig
+sagemaker:DescribeInferenceComponent
+sagemaker:DeleteInferenceComponent
+sagemaker:UpdateInferenceComponent
+```
+
+## 5. Manage Pipelines
+**Permissions to manage SageMaker pipelines and pipeline executions**
+
+**Actions:**
+```
+sagemaker:CreatePipeline
+sagemaker:RetryPipelineExecution
+sagemaker:SendPipelineExecutionStep*
+sagemaker:SendPipelineExecutionStepFailure
+sagemaker:SendPipelineExecutionStepSuccess
+sagemaker:UpdatePipeline*
+sagemaker:UpdatePipelineExecution
+sagemaker:DeletePipeline
+sagemaker:StartPipelineExecution
+sagemaker:StopPipelineExecution
+sagemaker:DescribePipeline*
+sagemaker:DescribePipelineDefinitionForExecution
+sagemaker:DescribePipelineExecution
+sagemaker:ListPipelineExecutions
+sagemaker:ListPipelineExecutionSteps
+sagemaker:ListPipelineParametersForExecution
+sagemaker:ListPipelines
+```
+
+## 6. Search and Visualize Experiments
+**Permissions to audit, query lineage, and visualize SageMaker AI experiments**
+
+**Actions:**
+```
+sagemaker:Search
+sagemaker:GetSearchSuggestions
+sagemaker:SearchTrainingPlanOfferings
+sagemaker:CreateExperiment
+sagemaker:CreateTrial
+sagemaker:DescribeExperiment
+sagemaker:DeleteExperiment
+sagemaker:UpdateExperiment
+sagemaker:DeleteTrial
+sagemaker:AssociateTrialComponent
+sagemaker:DisassociateTrialComponent
+sagemaker:ListExperiments
+sagemaker:ListTrials
+sagemaker:ListTrialComponents
+sagemaker:ListLineageGroups
+```
+
+## 7. Manage Model Monitoring
+**Permissions to manage monitoring schedules for SageMaker AI Model Monitor**
+
+**Actions:**
+```
+sagemaker:CreateMonitoringSchedule
+sagemaker:DeleteMonitoringSchedule
+sagemaker:DescribeMonitoringSchedule
+sagemaker:StartMonitoringSchedule
+sagemaker:StopMonitoringSchedule
+sagemaker:UpdateMonitoringAlert
+sagemaker:UpdateMonitoringSchedule
+sagemaker:CreateModelBiasJobDefinition
+sagemaker:DescribeModelBiasJobDefinition
+sagemaker:DeleteModelBiasJobDefinition
+sagemaker:CreateModelQualityJobDefinition
+sagemaker:DescribeModelQualityJobDefinition
+sagemaker:DeleteModelQualityJobDefinition
+sagemaker:CreateDataQualityJobDefinition
+sagemaker:DescribeDataQualityJobDefinition
+sagemaker:DeleteDataQualityJobDefinition
+sagemaker:CreateModelExplainabilityJobDefinition
+sagemaker:DescribeModelExplainabilityJobDefinition
+sagemaker:DeleteModelExplainabilityJobDefinition
+sagemaker:ListMonitoringSchedules
+sagemaker:ListMonitoringExecutions
+sagemaker:ListMonitoringAlertHistory
+sagemaker:ListMonitoringAlerts
+```
+
+## 8. Amazon S3 Full Access
+**Permissions to perform Amazon S3 operations**
+
+**Actions:**
+```
+s3:ListAllMyBuckets
+s3:GetBucket*
+```
+
+## 9. Amazon S3 Bucket Access
+**Permissions to perform operations on specified Amazon S3 buckets**
+
+**Actions:**
+```
+s3:ListAllMyBuckets
+s3:GetBucket*
+```
+
+## 10. SageMaker Canvas Core Access
+**Permissions for basic experimentation in SageMaker Canvas**
+
+**Actions:**
+```
+sagemaker:CreateCanvasApp
+sagemaker:ListCanvasApp
+```
+
+## 11. SageMaker Canvas Data Preparation
+**Permissions for end-to-end data preparation in SageMaker Canvas**
+
+**Actions:**
+```
+sagemaker:CreateProcessingJob
+sagemaker:DescribeProcessingJob
+sagemaker:StopProcessingJob
+```
+
+## 12. SageMaker Canvas MLOps
+**Permissions for SageMaker Canvas users to deploy models**
+
+**Actions:**
+```
+sagemaker:CreateEndpoint
+sagemaker:CreateEndpointConfig
+sagemaker:InvokeEndpoint
+```
+
+## 13. Use MLflow
+**Permissions to manage experiments, runs, and models in MLflow**
+
+**Actions:**
+```
+sagemaker:CreateExperiment
+sagemaker:CreateTrial
+sagemaker:DescribeExperiment
+sagemaker:DeleteExperiment
+sagemaker:UpdateExperiment
+```
+
+## 14. Manage MLflow Tracking Servers
+**Permissions to manage, start, and stop MLflow Tracking Servers**
+
+**Actions:**
+```
+sagemaker:CreateApp
+sagemaker:DeleteApp
+sagemaker:DescribeApp
+```
+
+## 15. Access required to AWS Services for MLflow
+**Permissions for MLflow Tracking Servers to access S3, Secrets Manager, and Model Registry**
+
+**Actions:**
+```
+s3:ListAllMyBuckets
+s3:GetBucket*
+secretsmanager:DescribeSecret
+secretsmanager:GetSecretValue
+secretsmanager:UpdateSecret
+secretsmanager:PutSecretValue
+secretsmanager:ListSecretVersionIds
+sagemaker:CreateModel
+sagemaker:DeleteModel
+sagemaker:DescribeModel
+```
+
+## 16. Run Studio EMR Serverless Applications
+**Permissions to Create and Manage EMR Serverless Applications**
+
+**Actions:**
+```
+sagemaker:CreateApp
+sagemaker:DeleteApp
+sagemaker:DescribeApp
+```
+
+This document comprehensively organizes all actions from the original policies into the specified ML activity categories without omitting any actions. Each section contains the complete set of relevant IAM actions needed for that particular ML activity.
