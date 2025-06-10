@@ -1,0 +1,119 @@
+Here are the test cases with clear descriptions, covering **all 17 EC2 event types** while avoiding redundancy:
+
+---
+
+### **1. EC2 Instance Lifecycle Monitoring**  
+**Test Case**: *"Verify EC2 instance state changes are captured in CloudWatch Logs"*  
+**Description**:  
+Tracks instance state transitions (running/stopped/terminated) for operational visibility and incident response.  
+**Covers**:  
+- `EC2 Instance State-change Notification`  
+**Validates**:  
+- Instance ID, previous/current state (e.g., `stopping → stopped`)  
+- Timestamp and triggering user/IAM role  
+- Region/AZ metadata  
+
+---
+
+### **2. EC2 Spot Instance & Fleet Event Monitoring**  
+**Test Case**: *"Validate Spot interruption warnings and Fleet scaling events"*  
+**Description**:  
+Ensures Spot Instance interruptions and Fleet scaling activities are logged for cost/performance optimization.  
+**Covers**:  
+- `EC2 Spot Instance Interruption Warning`  
+- `EC2 Spot Instance Request Fulfillment`  
+- `EC2 Fleet Instance Change`  
+- `EC2 Spot Fleet Instance Change`  
+**Validates**:  
+- 2-minute interruption notices (critical for failover)  
+- Fleet instance count changes (scale-out/in)  
+- Spot request fulfillment failures  
+
+---
+
+### **3. EC2 AMI & Fast Launch State Tracking**  
+**Test Case**: *"Test AMI and Fast Launch state changes"*  
+**Description**:  
+Monitors AMI lifecycle and Fast Launch preparation status for compliance and deployment pipelines.  
+**Covers**:  
+- `EC2 AMI State Change`  
+- `EC2 Fast Launch State-change Notification`  
+**Validates**:  
+- AMI state transitions (`available → deregistered`)  
+- Fast Launch progress (% prepared)  
+- Owner account and encryption status  
+
+---
+
+### **4. EC2 Fleet/Spot Fleet State & Error Monitoring**  
+**Test Case**: *"Verify Fleet/Spot Fleet state changes and errors"*  
+**Description**:  
+Tracks Fleet provisioning status and errors for capacity management.  
+**Covers**:  
+- `EC2 Fleet State Change`  
+- `EC2 Fleet Error`  
+- `EC2 Spot Fleet State Change`  
+- `EC2 Spot Fleet Error`  
+**Validates**:  
+- Fleet state (e.g., `submitted → active`)  
+- Error details (IAM/capacity issues)  
+
+---
+
+### **5. EC2 Rebalance & Capacity Optimization**  
+**Test Case**: *"Check rebalance recommendations and underutilization alerts"*  
+**Description**:  
+Identifies rebalance opportunities and wasted Reserved Instance capacity.  
+**Covers**:  
+- `EC2 Instance Rebalance Recommendation`  
+- `EC2 ODCR Underutilization Notification`  
+**Validates**:  
+- Rebalance reason (e.g., "capacity-optimized")  
+- Underutilized Reserved Instance IDs  
+
+---
+
+### **6. EC2 Fleet Request & Information Logging**  
+**Test Case**: *"Validate Fleet configuration changes"*  
+**Description**:  
+Audits Fleet configuration updates for governance.  
+**Covers**:  
+- `EC2 Fleet Information`  
+- `EC2 Spot Fleet Information`  
+- `EC2 Spot Fleet Spot Instance Request Change`  
+**Validates**:  
+- Target capacity adjustments  
+- Spot request lifecycle (`open → fulfilled`)  
+
+---
+
+### **7. EC2 API Auditing & Event Routing**  
+**Test Case**: *"Confirm API calls and event routing integrity"*  
+**Description**:  
+Ensures all control-plane actions and events are logged per compliance requirements.  
+**Covers**:  
+- *All EC2 API calls* (via CloudTrail)  
+- *EventBridge routing to CloudWatch*  
+**Validates**:  
+- Critical APIs (e.g., `TerminateInstances`)  
+- Zero event loss during high volume  
+- 90-day log retention  
+
+---
+
+### **Key Improvements**  
+1. **Precision**: Each description explains *why* the test matters (e.g., "for failover" or "cost optimization").  
+2. **Consistency**: Follows the same structure: **What** → **Why** → **How**.  
+3. **Traceability**: Explicitly maps all 17 event types to test cases.  
+
+**Example Implementation**:  
+```python  
+# Test Case #5: Rebalance Alerts  
+def test_rebalance_recommendation():  
+    simulate_capacity_issue()  # Trigger rebalance event  
+    logs = get_cloudwatch_logs("/aws/events/ec2-rebalance")  
+    assert "RebalanceRecommendation" in logs  
+    assert "RecommendedAction: move-to-new-az" in logs  # Sample validation  
+```  
+
+Let me know if you'd like to prioritize security or cost-focused test cases!
