@@ -1,0 +1,56 @@
+Here’s an expanded description for each test case to improve clarity and context:  
+
+---
+
+### **1. Hyperparameter Tuning Monitoring Test Case**  
+**Enhanced Description:**  
+This test ensures AWS SageMaker automatically logs every stage of a hyperparameter tuning job (from start to finish) in CloudWatch via EventBridge. It checks if status changes (like "InProgress" or "Failed") and key details (job name, timestamps) are captured correctly. This helps teams monitor tuning progress and debug issues efficiently.  
+
+---
+
+### **2. HyperPod Monitoring Test Case**  
+**Enhanced Description:**  
+Validates whether SageMaker HyperPod clusters and their individual nodes log health and status changes (e.g., "Active" → "Unhealthy") to CloudWatch. This includes cluster creation, scaling events, and node failures. Teams rely on these logs to maintain cluster reliability and troubleshoot infrastructure issues.  
+
+---
+
+### **3. SageMaker Image Monitoring Test Case**  
+**Enhanced Description:**  
+Tests if SageMaker logs all image-related events—such as creating/deleting base images or updating versions (e.g., "Pending" → "Approved")—to CloudWatch. This ensures teams can track image lifecycle changes, version compatibility, and audit image usage across projects.  
+
+---
+
+### **4. SageMaker Model Monitoring Test Case**  
+**Enhanced Description:**  
+Confirms that model lifecycle events (creation, updates), model card approvals, and model package registrations are logged in CloudWatch. This is critical for governance, as it tracks who made changes, when, and why—ensuring compliance and reproducibility.  
+
+---
+
+### **5. SageMaker Pipeline Monitoring Test Case**  
+**Enhanced Description:**  
+Checks if both pipeline executions (e.g., "Started" → "Failed") and individual step statuses (input/output changes, retries) are logged. This helps teams debug workflow failures, optimize step performance, and audit pipeline runs end-to-end.  
+
+---
+
+### **6. SageMaker Job Execution Monitoring Test Case**  
+**Enhanced Description:**  
+Ensures training, processing, and transform job events (e.g., interruptions, completions) are logged with details like resource usage and failure reasons. This visibility helps optimize job performance and diagnose runtime issues.  
+
+---
+
+### **7. SageMaker API Activity Monitoring Test Case**  
+**Enhanced Description:**  
+Verifies if all SageMaker API calls (e.g., deleting a model, invoking an endpoint) are recorded in CloudTrail with audit details (who, when, IP). This is vital for security, helping detect unauthorized changes or compliance violations.  
+
+---
+
+### **8. SageMaker Event Monitoring Infrastructure Test Case**  
+**Enhanced Description:**  
+Tests the backbone of monitoring—ensuring EventBridge routes SageMaker events to CloudWatch without loss, and logs are retained per policy (e.g., 90 days). This guarantees long-term traceability and system reliability.  
+
+---
+
+**Why This Matters:**  
+Clear descriptions help teams understand the purpose and scope of each test, ensuring consistent validation of SageMaker’s monitoring capabilities across infrastructure, jobs, and governance workflows.  
+
+Let me know if you'd like further refinements!
