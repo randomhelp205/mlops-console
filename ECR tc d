@@ -1,0 +1,62 @@
+Here are the refined test cases with expanded **Description** sections that provide clear context and purpose for each test:  
+
+---
+
+### **1. ECR Repository Lifecycle Monitoring**  
+**Test Case**: *"Verify ECR repository creation/deletion events are captured in CloudWatch Logs"*  
+**Description**:  
+*Validates that AWS ECR repository lifecycle events (creation, deletion, encryption configuration) are accurately logged in CloudWatch. Ensures critical metadata like repository ARN, timestamp, and IAM user/role are captured for audit trails and compliance.*  
+
+---
+
+### **2. ECR Image Push/Pull Monitoring**  
+**Test Case**: *"Validate image push/pull actions are logged with metadata"*  
+**Description**:  
+*Checks that all Docker image push/pull operations to/from ECR repositories are logged with essential details, including image tags/digests, source IP addresses, and request latency. This helps troubleshoot access issues and monitor usage patterns.*  
+
+---
+
+### **3. ECR Image Scan & Vulnerability Monitoring**  
+**Test Case**: *"Verify image scan events and results appear in logs"*  
+**Description**:  
+*Confirms that automated vulnerability scans (triggered on image push or manually) log results to CloudWatch, including severity levels (e.g., CRITICAL/HIGH) and CVE IDs. Ensures security teams can track exposures and prioritize fixes.*  
+
+---
+
+### **4. ECR Lifecycle Policy Execution**  
+**Test Case**: *"Test lifecycle policy actions (expiry, cleanup) are logged"*  
+**Description**:  
+*Audits whether ECR lifecycle policies (e.g., "expire images older than 30 days") execute as expected and log deletion events. Validates that expired images are removed and logged with timestamps for compliance reporting.*  
+
+---
+
+### **5. ECR Replication & Cache Monitoring**  
+**Test Case**: *"Validate cross-region replication and pull-through cache events"*  
+**Description**:  
+*Tests if ECR cross-region replication (for disaster recovery) and pull-through cache (for frequent image pulls) events are logged with status (success/failure) and performance metrics. Ensures geo-redundancy and cache efficiency.*  
+
+---
+
+### **6. ECR API Auditing (CloudTrail)**  
+**Test Case**: *"Confirm all ECR API calls are logged in CloudTrail"*  
+**Description**:  
+*Verifies that all ECR API calls (e.g., `CreateRepository`, `SetRepositoryPolicy`) are recorded in AWS CloudTrail with IAM identity and timestamp. Critical for detecting unauthorized changes (e.g., policy overrides).*  
+
+---
+
+### **7. EventBridge Routing & Retention**  
+**Test Case**: *"Test ECR events route to CloudWatch with retention enforcement"*  
+**Description**:  
+*Ensures ECR events (e.g., scan results, lifecycle actions) are reliably routed to CloudWatch Logs and retained for the configured period (e.g., 90 days). Validates log group retention settings and event delivery latency.*  
+
+---
+
+### **Key Clarifications**:  
+1. **Why?** Each description explains the *business/security need* (e.g., compliance, troubleshooting).  
+2. **What?** Specifies the exact data validated (e.g., "CVE IDs," "IAM user").  
+3. **How?** Indicates the tools involved (CloudWatch, CloudTrail).  
+
+**Example for Stakeholders**:  
+> *"Test 3 ensures vulnerability scans don’t just run silently—their results (like critical CVEs) must appear in logs for SOC teams to act upon."*  
+
+Let me know if you'd like further customization (e.g., adding regulatory references like HIPAA/GDPR)!
