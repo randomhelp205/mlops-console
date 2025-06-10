@@ -1,0 +1,116 @@
+Here’s an enhanced version of your Lambda monitoring test cases with **expanded descriptions**, **negative test scenarios**, and **compliance-focused validations** for clarity and completeness:
+
+---
+
+### **1. Lambda Function Lifecycle Monitoring**  
+**Test Case**: *"Verify Lambda function creation, updates, and deletion are logged"*  
+**Description**:  
+Validates that all critical lifecycle events for Lambda functions are captured in CloudWatch Logs and CloudTrail. Ensures operational teams can track function deployments, rollbacks, and deletions for change management and incident response.  
+**Negative Test**:  
+- Attempt to create a function with invalid permissions; verify the `AccessDenied` error is logged.  
+- Delete a non-existent function; confirm the `ResourceNotFoundException` appears in logs.  
+
+---
+
+### **2. Lambda Permissions & Resource Policies**  
+**Test Case**: *"Validate permission changes (add/remove) and resource policies"*  
+**Description**:  
+Audits modifications to function permissions (e.g., allowing S3 to invoke Lambda) to prevent unauthorized access. Critical for least-privilege enforcement and SOC2/ISO27001 compliance.  
+**Compliance Check**:  
+- Verify `RemovePermission` events log the removed principal/action to meet revoke-access audit requirements.  
+
+---
+
+### **3. Lambda Alias & Version Monitoring**  
+**Test Case**: *"Test alias/version operations are captured"*  
+**Description**:  
+Ensures versioned deployments (e.g., `PROD` alias pointing to v2) and traffic-shifting changes are logged for rollback capabilities.  
+**Negative Test**:  
+- Update an alias to a non-existent version; validate the `InvalidParameterValueException` is logged.  
+
+---
+
+### **4. Lambda Event Source Mappings**  
+**Test Case**: *"Verify event source mapping changes (e.g., SQS/Kinesis)"*  
+**Description**:  
+Monitors integrations with event sources (e.g., SQS batch size adjustments) to ensure data pipelines operate as configured.  
+**Compliance Check**:  
+- Confirm `DeleteEventSourceMapping` logs include the source ARN for GDPR data-processing trail.  
+
+---
+
+### **5. Lambda Concurrency & Scaling**  
+**Test Case**: *"Check concurrency/reserved capacity changes"*  
+**Description**:  
+Tracks scaling configurations to prevent throttling incidents or cost overruns. Validates autoscaling actions match business SLAs.  
+**Negative Test**:  
+- Set concurrency to zero; verify `Invoke` failures log `TooManyRequestsException`.  
+
+---
+
+### **6. Lambda URL & Runtime Management**  
+**Test Case**: *"Validate function URL/config and runtime updates"*  
+**Description**:  
+Audits HTTP endpoint changes (e.g., CORS policy updates) and runtime version upgrades/downgrades for security and compatibility.  
+**Compliance Check**:  
+- Runtime auto-updates must log the old/new version for PCI-DSS patch tracking.  
+
+---
+
+### **7. Lambda Layers & Code Signing**  
+**Test Case**: *"Test layer publishing and code signing events"*  
+**Description**:  
+Ensures shared code (layers) and code-signing configurations (e.g., AWS Signer profiles) are logged to prevent tampering.  
+**Negative Test**:  
+- Publish a layer with incompatible runtimes; validate `InvalidParameterValueException`.  
+
+---
+
+### **8. Lambda Invocation & Async Processing**  
+**Test Case**: *"Verify async invocation config changes"*  
+**Description**:  
+Tracks dead-letter queue (DLQ) assignments and retry policies to debug failed invocations. Critical for HIPAA workloads with guaranteed processing.  
+**Negative Test**:  
+- Configure a DLQ with insufficient permissions; check for `AccessDenied` in logs.  
+
+---
+
+### **9. Lambda Tagging & Resource Controls**  
+**Test Case**: *"Validate resource tagging and metadata operations"*  
+**Description**:  
+Ensures tags (e.g., `CostCenter=Marketing`) are applied/removed consistently for governance and cost allocation.  
+**Compliance Check**:  
+- `UntagResource` must log removed tags for change tracking.  
+
+---
+
+### **10. EventBridge Routing & CloudTrail Coverage**  
+**Test Case**: *"Confirm all Lambda events route to CloudWatch with full CloudTrail coverage"*  
+**Description**:  
+Validates zero event loss during high-volume operations (e.g., 1,000 concurrent API calls) and meets log retention policies (e.g., 90 days for HIPAA).  
+**Negative Test**:  
+- Disable CloudTrail logging temporarily; verify security alerts trigger.  
+
+---
+
+### **Key Enhancements**:  
+1. **Negative Tests**: Added failure scenarios to validate error logging.  
+2. **Compliance**: Mapped tests to standards (SOC2, HIPAA, PCI-DSS).  
+3. **Implementation Example**:  
+```python  
+# Test Case #2: Permission Auditing (SOC2)  
+def test_permission_revocation_logs():  
+    remove_permission("my-function", statement_id="s3-invoke")  
+    logs = get_cloudwatch_logs("/aws/lambda/security")  
+    assert "RemovePermission" in logs  
+    assert "Principal: s3.amazonaws.com" in logs  # SOC2 access revocation proof  
+```  
+
+4. **Test Coverage Table**:  
+| **Requirement**       | **Test Cases**          | **Validation Method**               |  
+|------------------------|-------------------------|-------------------------------------|  
+| **Change Auditing**    | 1, 3, 9                | CloudTrail + CloudWatch logs        |  
+| **Error Handling**     | All negative tests      | Error event patterns                |  
+| **Data Integrity**    | 7 (Code Signing)        | CodeSigningConfig ARN verification  |  
+
+Let me know if you'd like to prioritize tests for a specific framework (e.g., FedRAMP, NIST 800-53)!
