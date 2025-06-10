@@ -1,0 +1,154 @@
+Here are the consolidated test cases for monitoring AWS Lambda events through CloudWatch and EventBridge, covering all the API actions you listed:
+
+---
+
+### **1. Lambda Function Lifecycle Monitoring**
+**Test Case**: *"Verify Lambda function creation, updates, and deletion are logged"*  
+**Description**:  
+Validates core function lifecycle events for operational visibility and audit compliance.  
+**Covers**:  
+- `CreateFunction`/`DeleteFunction`  
+- `UpdateFunctionCode`/`UpdateFunctionConfiguration`  
+- `PublishVersion`  
+**Validates**:  
+- Function ARN, runtime, and handler  
+- Timestamp and IAM role  
+- Code/config change metadata (excluding omitted `ZipFile`/`Environment`)  
+
+---
+
+### **2. Lambda Permissions & Resource Policies**  
+**Test Case**: *"Validate permission changes (add/remove) and resource policies"*  
+**Description**:  
+Tracks function access control modifications for security auditing.  
+**Covers**:  
+- `AddPermission`/`RemovePermission`  
+- `GetPolicy`  
+**Validates**:  
+- Principal (e.g., S3/SNS triggering permissions)  
+- Action (e.g., `lambda:InvokeFunction`)  
+- Source ARN  
+
+---
+
+### **3. Lambda Alias & Version Monitoring**  
+**Test Case**: *"Test alias/version operations are captured"*  
+**Description**:  
+Ensures versioning and alias routing changes are logged.  
+**Covers**:  
+- `CreateAlias`/`UpdateAlias`/`DeleteAlias`  
+- `PublishVersion`  
+**Validates**:  
+- Alias name and target version  
+- Routing weights (if using traffic shifting)  
+
+---
+
+### **4. Lambda Event Source Mappings**  
+**Test Case**: *"Verify event source mapping changes (e.g., SQS/Kinesis)"*  
+**Description**:  
+Monitors integrations with event sources.  
+**Covers**:  
+- `CreateEventSourceMapping`/`UpdateEventSourceMapping`/`DeleteEventSourceMapping`  
+- `ListEventSourceMappings`  
+**Validates**:  
+- Source ARN (e.g., SQS queue)  
+- Batch size and retry policies  
+
+---
+
+### **5. Lambda Concurrency & Scaling**  
+**Test Case**: *"Check concurrency/reserved capacity changes"*  
+**Description**:  
+Tracks scaling configuration for performance/cost optimization.  
+**Covers**:  
+- `PutFunctionConcurrency`/`DeleteFunctionConcurrency`  
+- `PutProvisionedConcurrencyConfig`/`DeleteProvisionedConcurrencyConfig`  
+**Validates**:  
+- Reserved/concurrent execution limits  
+- Scaling trigger metadata  
+
+---
+
+### **6. Lambda URL & Runtime Management**  
+**Test Case**: *"Validate function URL/config and runtime updates"*  
+**Description**:  
+Audits HTTP endpoint and runtime version changes.  
+**Covers**:  
+- `CreateFunctionUrlConfig`/`UpdateFunctionUrlConfig`/`DeleteFunctionUrlConfig`  
+- `PutRuntimeManagementConfig`  
+**Validates**:  
+- URL CORS/auth settings  
+- Runtime version (e.g., manual/auto-update)  
+
+---
+
+### **7. Lambda Layers & Code Signing**  
+**Test Case**: *"Test layer publishing and code signing events"*  
+**Description**:  
+Monitors shared code (layers) and code integrity controls.  
+**Covers**:  
+- `PublishLayerVersion`  
+- `PutFunctionCodeSigningConfig`/`DeleteCodeSigningConfig`  
+- `GetLayerVersionPolicy`  
+**Validates**:  
+- Layer ARN and compatible runtimes  
+- Signing profile ARN  
+
+---
+
+### **8. Lambda Invocation & Async Processing**  
+**Test Case**: *"Verify async invocation config changes"*  
+**Description**:  
+Tracks dead-letter queues and retry policies.  
+**Covers**:  
+- `PutFunctionEventInvokeConfig`/`UpdateFunctionEventInvokeConfig`  
+**Validates**:  
+- DLQ ARN and max retry attempts  
+
+---
+
+### **9. Lambda Tagging & Resource Controls**  
+**Test Case**: *"Validate resource tagging and metadata operations"*  
+**Description**:  
+Ensures tag-based governance and metadata queries are logged.  
+**Covers**:  
+- `TagResource`/`UntagResource`  
+- `GetFunctionConfiguration`/`ListFunctions`  
+**Validates**:  
+- Tag keys/values  
+- Configuration metadata  
+
+---
+
+### **10. EventBridge Routing & CloudTrail Coverage**  
+**Test Case**: *"Confirm all Lambda events route to CloudWatch with full CloudTrail coverage"*  
+**Description**:  
+Validates infrastructure and compliance requirements.  
+**Checks**:  
+- Zero dropped events (test with 100+ concurrent API calls)  
+- CloudTrail logs all control-plane APIs  
+- Log retention = 90 days  
+
+---
+
+### **Key Test Coverage**  
+| **Category**               | **Example API Actions**                     | **Critical Fields**                          |  
+|----------------------------|---------------------------------------------|----------------------------------------------|  
+| **Function Lifecycle**     | `CreateFunction`, `UpdateFunctionCode`      | ARN, runtime, last modified                  |  
+| **Security**               | `AddPermission`, `PutFunctionCodeSigning`   | Principal, actions, signing profile         |  
+| **Scaling**                | `PutProvisionedConcurrencyConfig`           | Reserved concurrency count                   |  
+| **Event Sources**          | `UpdateEventSourceMapping`                  | Source ARN, batch size                       |  
+
+**Implementation Snippet**:  
+```python
+# Test Case #1: Function Lifecycle
+def test_lambda_creation_logs():
+    create_function("my-function", runtime="python3.9")
+    logs = get_cloudwatch_logs("/aws/lambda/operations")
+    assert "CreateFunction" in logs
+    assert "FunctionArn: arn:aws:lambda:us-east-1:123456789012:function:my-function" in logs
+    assert "Runtime: python3.9" in logs
+```
+
+Let me know if you'd like to add negative test cases (e.g., failed permissions) or focus on specific compliance requirements (e.g., SOC2)!
