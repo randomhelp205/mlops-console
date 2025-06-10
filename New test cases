@@ -1,0 +1,264 @@
+### **Hyperparameter Tuning Monitoring Test Case**  
+
+**Test Case:** *"Verify hyperparameter tuning job state changes are captured in CloudWatch Logs via EventBridge"*  
+
+**Short Description:**  
+Validates that all hyperparameter tuning job lifecycle events (starting, in-progress, completed/failed/stopped states) are automatically logged to CloudWatch. Ensures critical metadata like job name, status transitions, and timestamps are properly recorded for monitoring and debugging.  
+
+**Key Validations:**  
+- Job creation and initialization events  
+- Status transitions (e.g., `InProgress` → `Completed`)  
+- Final state capture (Success/Failure/Stopped)  
+- Associated training job metadata  
+
+Covers the end-to-end monitoring of hyperparameter optimization workflows.
+
+
+
+
+
+### **Combined HyperPod Monitoring Test Case**  
+
+**Test Case:** *"Verify HyperPod cluster and node health state changes are captured in CloudWatch Logs"*  
+
+**Short Description:**  
+Validates that both cluster-level state changes (creation, termination, scaling) and individual node health status changes are automatically logged to CloudWatch via EventBridge. Ensures complete visibility of HyperPod lifecycle events and operational health monitoring.  
+
+**Key Validations:**  
+- Cluster state transitions (e.g., `Creating` → `Active` → `Terminating`)  
+- Node health status changes (e.g., `Healthy` ↔ `Unhealthy`)  
+- Scaling events (nodes added/removed)  
+- Critical metadata including:  
+  - Cluster/node identifiers  
+  - Timestamps  
+  - Status change reasons  
+  - Associated user/IAM role  
+
+Covers both infrastructure provisioning and real-time operational monitoring of HyperPod environments.  
+
+**Note:** Combines infrastructure-level and component-level monitoring into a single comprehensive test case while maintaining all critical validation points.
+
+
+
+
+### **Combined SageMaker Image Monitoring Test Case**
+
+**Test Case:** *"Verify SageMaker image and image version state changes are captured in CloudWatch Logs"*
+
+**Short Description:**
+Validates that both base image lifecycle events (creation, deletion) and version-specific state changes (registration, updates) are automatically logged to CloudWatch via EventBridge. Ensures complete tracking of image management operations across your ML environment.
+
+**Key Validations:**
+- Base image state transitions (e.g., `Pending` → `Created` → `Deleted`)
+- Image version registration and update events
+- Version-specific status changes (e.g., `Approved`/`Deprecated`)
+- Critical metadata including:
+  - Image/version ARNs
+  - Timestamps
+  - Status change reasons
+  - Associated user/IAM role
+  - Version compatibility information
+
+**Coverage:**
+- Image creation and deletion workflows
+- Version registration and updates
+- Approval/deprecation processes
+- Cross-account sharing events (if applicable)
+
+**Note:** Combines both base image and version-specific monitoring into a single comprehensive test case while maintaining all critical validation points for image management.
+
+
+
+
+
+
+
+### **Combined SageMaker Model Monitoring Test Case**  
+
+**Test Case:** *"Verify SageMaker model, model card, and model package state changes are captured in CloudWatch Logs"*  
+
+**Short Description:**  
+Validates that all model-related lifecycle events (creation, updates, approvals, deletions) across models, model cards, and model packages are automatically logged to CloudWatch via EventBridge. Ensures comprehensive tracking of model governance and deployment workflows.  
+
+**Key Validations:**  
+- **Model Lifecycle:**  
+  - Creation/update/deletion events  
+  - Status transitions (e.g., `Pending` → `InService`)  
+- **Model Cards:**  
+  - Approval status changes  
+  - Metadata updates (e.g., risk ratings, evaluations)  
+- **Model Packages:**  
+  - Versioning events  
+  - Approval workflows (e.g., `Pending` → `Approved`)  
+- **Critical Metadata:**  
+  - Resource ARNs and names  
+  - Timestamps  
+  - Status change reasons  
+  - Responsible user/IAM role  
+
+**Coverage:**  
+- End-to-end model governance (cards → packages → deployments)  
+- Compliance-related state changes (approvals/audits)  
+- Model registry operations  
+
+**Note:** Consolidates all model-related monitoring into a single test case while maintaining granular validation of governance, deployment, and registry workflows.
+
+
+
+
+
+
+
+### **Combined SageMaker Pipeline Monitoring Test Case**
+
+**Test Case:** *"Verify SageMaker pipeline execution and step state changes are captured in CloudWatch Logs"*
+
+**Short Description:**
+Validates that both pipeline-level execution events and individual step state transitions are automatically logged to CloudWatch via EventBridge. Ensures complete visibility into pipeline workflows from start to finish, including detailed step-level tracking.
+
+**Key Validations:**
+- Pipeline execution lifecycle events:
+  - Execution started/stopped/failed
+  - Status transitions (e.g., "Executing" → "Succeeded")
+- Individual step state changes:
+  - Step start/complete/fail events
+  - Input/output parameter changes
+  - Retry attempts (when applicable)
+- Critical metadata including:
+  - Pipeline and execution ARNs
+  - Step names and types
+  - Timestamps and durations
+  - Error messages (for failed executions)
+  - Associated user/IAM role
+
+**Coverage:**
+- End-to-end pipeline execution monitoring
+- Detailed step-by-step workflow tracking
+- Failure and retry scenarios
+- Parameter passing between steps
+
+**Note:** Combines both high-level pipeline execution monitoring and granular step-level tracking into a single comprehensive test case while maintaining all critical validation points for ML workflows.
+
+
+
+
+
+### **Combined SageMaker Job Execution Monitoring Test Case**  
+
+**Test Case:** *"Verify SageMaker job state changes (training/processing/transform) are captured in CloudWatch Logs"*  
+
+**Short Description:**  
+Validates that all job execution lifecycle events (creation, status changes, completion) for training, processing, and transform jobs are automatically logged to CloudWatch via EventBridge. Ensures comprehensive tracking of job execution across all SageMaker job types.  
+
+**Key Validations:**  
+- **Job Lifecycle Events:**  
+  - Job initialization (`InProgress`)  
+  - Status transitions (e.g., `Stopping`, `Completed`, `Failed`)  
+  - Runtime modifications (e.g., spot instance interruptions)  
+- **Job-Specific Details:**  
+  - Training jobs: Metrics, hyperparameters  
+  - Processing jobs: Input/output configurations  
+  - Transform jobs: Batch processing status  
+- **Critical Metadata:**  
+  - Job ARN and name  
+  - Timestamps and duration  
+  - Resource configurations (instance types, counts)  
+  - Failure reasons (if applicable)  
+  - Associated user/IAM role  
+
+**Coverage:**  
+- All major job types (training/processing/transform)  
+- Spot instance interruptions and retries  
+- Resource utilization tracking  
+- Failure analysis and debugging  
+
+**Note:** Combines monitoring for all SageMaker job types into a single test case while maintaining detailed validation of execution patterns and failure modes.
+
+
+
+
+
+
+
+### **Combined SageMaker API Activity Monitoring Test Case**  
+
+**Test Case:** *"Verify SageMaker API calls and critical operations are captured in CloudTrail logs"*  
+
+**Short Description:**  
+Validates that all SageMaker API activity - including both control plane operations (create/delete resources) and data operations (invoke endpoint) - are properly logged to CloudTrail with complete audit details. Ensures compliance with security and governance requirements.  
+
+**Key Validations:**  
+- **API Call Coverage:**  
+  - Management operations (Create/Delete/Update)  
+  - Data operations (InvokeEndpoint)  
+  - Permission changes (UpdateEndpointWeights)  
+- **Critical Audit Fields:**  
+  - AWS service and API action names  
+  - Timestamps with millisecond precision  
+  - Source IP and user agent  
+  - IAM principal (user/role) making the call  
+  - Request parameters and response elements  
+  - Error codes (for failed API calls)  
+- **Special Cases:**  
+  - Cross-account API calls  
+  - Service-linked role operations  
+  - AWS Management Console actions  
+
+**Coverage:**  
+- All critical SageMaker API categories  
+- Security-sensitive operations  
+- Failed attempt logging  
+- Console vs CLI/SDK activity  
+
+**Note:** Combines general API logging verification with specific validation of high-risk operations into a single security-focused test case while maintaining all essential audit requirements.  
+
+**Implementation Tip:**  
+Use CloudTrail Lake queries to specifically test for:  
+`eventSource = 'sagemaker.amazonaws.com' AND eventCategory = 'Management'`  
+to verify all control plane operations are captured.
+
+
+
+
+
+
+### **Combined SageMaker Event Monitoring Infrastructure Test Case**  
+
+**Test Case:** *"Verify EventBridge event routing and CloudWatch log retention for SageMaker monitoring"*  
+
+**Short Description:**  
+Validates the end-to-end monitoring infrastructure by confirming:  
+1) EventBridge correctly routes all SageMaker service events to CloudWatch  
+2) Logs are retained according to compliance requirements  
+
+**Key Validations:**  
+
+**EventBridge Verification:**  
+- All SageMaker event patterns are properly configured in EventBridge rules  
+- No event types are missed in routing (test with all major services)  
+- Events maintain full fidelity during transmission (no data loss)  
+- Dead-letter queue handling for failed deliveries  
+
+**CloudWatch Log Management:**  
+- Log groups are created with correct retention periods (e.g., 30/90/365 days)  
+- Retention policies are enforced (test by checking expiration of test logs)  
+- Log group permissions prevent unauthorized access  
+- Log stream organization follows naming conventions  
+
+**Test Approach:**  
+1. Trigger representative events from each SageMaker service category  
+2. Verify:  
+   - Events appear in correct log groups within expected latency  
+   - No event data corruption during transfer  
+   - Logs persist for full retention period  
+   - Auto-deletion occurs after retention period expires  
+
+**Coverage:**  
+- Event collection infrastructure reliability  
+- Compliance with log retention policies  
+- Monitoring system durability  
+
+**Note:** Combines infrastructure validation with compliance testing while maintaining operational visibility requirements.  
+
+**Implementation Tip:**  
+Use a canary test pattern that generates known test events monthly to continuously validate the monitoring pipeline.
