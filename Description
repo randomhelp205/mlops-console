@@ -1,0 +1,73 @@
+Here are concise test case descriptions for each scenario:
+
+### **SageMaker Endpoint Monitoring**  
+1. **"Verify SageMaker endpoint deployment state change events are captured in CloudWatch Logs"**  
+   - *Description*: Deploy a SageMaker endpoint and verify that deployment status changes (e.g., `InService`, `Failed`) are logged in the designated CloudWatch log group.  
+
+2. **"Validate SageMaker endpoint state change events appear in CloudWatch Logs when status changes"**  
+   - *Description*: Modify an existing endpoint (e.g., update variant weight) and confirm state transitions (e.g., `Updating`, `InService`) are recorded in CloudWatch.  
+
+### **Feature Group Monitoring**  
+3. **"Confirm SageMaker feature group state change events are logged to CloudWatch"**  
+   - *Description*: Create/delete a SageMaker Feature Group and ensure events like `Created`, `Deleted` appear in CloudWatch logs.  
+
+### **Hyperparameter Tuning Monitoring**  
+4. **"Test hyperparameter tuning job state changes are monitored via EventBridge to CloudWatch"**  
+   - *Description*: Launch a hyperparameter tuning job and verify status changes (e.g., `Completed`, `Failed`) are logged.  
+
+### **HyperPod Monitoring**  
+5. **"Verify HyperPod cluster node health events are captured in CloudWatch Logs"**  
+   - *Description*: Simulate a node health change (e.g., `Healthy` → `Unhealthy`) and check CloudWatch for the event.  
+
+6. **"Validate HyperPod cluster state change events appear in monitoring logs"**  
+   - *Description*: Start/stop a HyperPod cluster and confirm state changes (e.g., `Creating`, `Ready`) are logged.  
+
+### **Image/Version Monitoring**  
+7. **"Test SageMaker image state change events are logged to CloudWatch"**  
+   - *Description*: Register a custom SageMaker image and verify `Created`/`Deleted` events are captured.  
+
+8. **"Confirm image version state changes trigger EventBridge to CloudWatch logging"**  
+   - *Description*: Create a new image version and check CloudWatch for version-specific state changes.  
+
+### **Model Monitoring**  
+9. **"Verify model card state changes generate CloudWatch log entries"**  
+   - *Description*: Update a model card (e.g., approval status) and validate events appear in logs.  
+
+10. **"Validate model package state change events appear in CloudWatch"**  
+    - *Description*: Approve/reject a model package and confirm status changes (e.g., `Approved`, `Rejected`) are logged.  
+
+11. **"Test model creation/update state changes are captured in monitoring logs"**  
+    - *Description*: Create or update a SageMaker model and verify `Created`/`Updated` events in CloudWatch.  
+
+### **Pipeline Monitoring**  
+12. **"Confirm pipeline execution state changes trigger EventBridge to CloudWatch"**  
+    - *Description*: Run a SageMaker Pipeline and check for execution state changes (e.g., `Succeeded`, `Failed`).  
+
+13. **"Verify pipeline step state changes are logged to CloudWatch"**  
+    - *Description*: Monitor individual pipeline step transitions (e.g., `Processing` → `Completed`) in logs.  
+
+### **Job Execution Monitoring**  
+14. **"Test processing job state changes appear in CloudWatch Logs"**  
+    - *Description*: Submit a processing job and validate state changes (e.g., `Running`, `Completed`).  
+
+15. **"Validate training job state change events are captured"**  
+    - *Description*: Start a training job and confirm events (e.g., `Training`, `Completed`) are logged.  
+
+16. **"Confirm transform job state changes generate CloudWatch log entries"**  
+    - *Description*: Run a batch transform job and verify state transitions (e.g., `InProgress`, `Failed`).  
+
+### **API Call Monitoring (CloudTrail)**  
+17. **"Verify SageMaker API calls are logged via CloudTrail"**  
+    - *Description*: Perform SageMaker API actions (e.g., `CreateModel`, `DeleteEndpoint`) and check CloudTrail logs.  
+
+18. **"Validate critical API operations appear in CloudTrail logs"**  
+    - *Description*: Test high-impact APIs (e.g., `UpdateEndpointWeights`) and confirm CloudTrail records them.  
+
+### **General Monitoring**  
+19. **"Confirm EventBridge rules properly forward all SageMaker events to CloudWatch"**  
+    - *Description*: Trigger multiple SageMaker events and ensure none are missed in CloudWatch.  
+
+20. **"Test log group retention policy maintains logs for required duration"**  
+    - *Description*: Verify logs persist for the configured retention period (e.g., 30 days) before auto-deletion.  
+
+Each test case ensures **real-time event capture** (via EventBridge) and **log integrity** (in CloudWatch/CloudTrail). Let me know if you'd like to prioritize or expand any!
