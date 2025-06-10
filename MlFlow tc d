@@ -1,0 +1,97 @@
+Here’s an expanded version of your test cases with clearer descriptions for broader understanding:
+
+---
+
+### **1. MLflow Tracking Server Lifecycle Monitoring**  
+**Test Case**: *"Verify MLflow Tracking Server lifecycle events are captured in CloudWatch Logs"*  
+**Description**:  
+This test ensures that key lifecycle events of an MLflow Tracking Server (creation, updates, starts/stops, and deletions) are reliably logged in CloudWatch. It checks for successful and failed states to confirm monitoring coverage for operational troubleshooting. For example, if a server fails to start, the logs should explicitly capture the error reason and timestamp for debugging.  
+
+**Covers Events**:  
+- `Creating` → `Created`/`Create Failed`  
+- `Updating` → `Updated`/`Update Failed`  
+- `Starting`/`Stopping` → `Started`/`Stopped` (or failed states)  
+- `Deleting` → `Deleted`/`Delete Failed`  
+
+**Validation**:  
+- Server ARN, status, timestamp, and IAM role in logs  
+- Error details for failed states  
+
+---
+
+### **2. MLflow Tracking Server Maintenance Monitoring**  
+**Test Case**: *"Validate maintenance events for MLflow Tracking Servers appear in logs"*  
+**Description**:  
+This test verifies that scheduled or manual maintenance activities (e.g., software upgrades, security patches) on the MLflow Tracking Server are logged with their status (in-progress, completed, or failed). It ensures administrators can track maintenance windows and investigate failures, such as a patching job timing out.  
+
+**Covers Events**:  
+- `Maintenance In Progress` → `Complete`/`Failed`  
+
+**Validation**:  
+- Maintenance window timestamps  
+- Failure reasons (if applicable)  
+
+---
+
+### **3. MLflow Model/Experiment Operations Monitoring**  
+**Test Case**: *"Verify MLflow experiment/model events are logged"*  
+**Description**:  
+This test validates that MLflow-specific activities—such as creating experiment runs, registering models, or transitioning model stages (e.g., from Staging to Production)—are captured in logs. It ensures data scientists can audit model lineage and track changes, like when a model version is promoted via an API call.  
+
+**Covers Events**:  
+- `Creating Run`  
+- `Creating RegisteredModel`/`ModelVersion`  
+- `Transitioning ModelVersion Stage`  
+- `Setting RegisteredModel Alias`  
+
+**Validation**:  
+- Experiment/model IDs and versions  
+- Stage transitions (e.g., Staging → Production)  
+- Alias mappings  
+
+---
+
+### **4. MLflow API Call Auditing (CloudTrail)**  
+**Test Case**: *"Confirm critical MLflow API calls are logged in CloudTrail"*  
+**Description**:  
+This test checks if sensitive MLflow Tracking Server management API calls (e.g., creating/deleting servers, generating presigned URLs) are recorded in CloudTrail for security compliance. It ensures accountability by logging who (IAM user/role) performed actions and when, such as an accidental server deletion by an unauthorized user.  
+
+**Covers APIs**:  
+- `Create/Describe/Update/DeleteMlflowTrackingServer`  
+- `Start/StopMlflowTrackingServer`  
+- `CreatePresignedMlflowTrackingServer`  
+
+**Validation**:  
+- API name, caller identity, and timestamp  
+- Request/response parameters  
+
+---
+
+### **5. EventBridge Routing & Log Retention**  
+**Test Case**: *"Test EventBridge routes all MLflow events to CloudWatch with proper retention"*  
+**Description**:  
+This test validates the infrastructure setup by ensuring EventBridge reliably forwards all MLflow event types (lifecycle, maintenance, model operations) to CloudWatch without drops. It also confirms log retention policies (e.g., 30-day expiration) are enforced to meet compliance requirements, preventing unintended data loss or excessive storage costs.  
+
+**Checks**:  
+- No dropped events (test with all event types)  
+- Log retention policy enforcement (e.g., 30 days)  
+
+---
+
+### **Key Benefits**:  
+1. **Full Coverage**: Combines related events (e.g., all lifecycle states) into single test cases.  
+2. **Efficiency**: Reduces redundancy (e.g., separate "Created"/"Create Failed" validations merged).  
+3. **Compliance Focus**: Explicitly tests security-critical areas (API auditing, retention).  
+
+**Example Test Execution**:  
+```python  
+# Pseudocode for testing server creation  
+def test_mlflow_server_creation_logs():  
+    create_server()  
+    logs = get_cloudwatch_logs()  
+    assert "Tracking Server Creating" in logs  
+    assert "Tracking Server Created" in logs  
+    assert_log_fields(logs, expected_arn, expected_iam_role)  
+```  
+
+Let me know if you'd like further refinements!
