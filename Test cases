@@ -47,3 +47,16 @@ Each test case would involve:
 4. (For API tests) Confirming CloudTrail captures the API call
 
 Would you like me to elaborate on any specific test case with detailed steps or validation criteria?
+
+
+
+
+
+
+**Combined Test Case:**  
+*"Verify SageMaker endpoint deployment and runtime state changes are logged to CloudWatch"*  
+
+**Short Description:**  
+Validates that all endpoint lifecycle events (creation, updates, scaling, deletion) and runtime state transitions (e.g., `InService` → `Updating` → `Failed`) are captured in CloudWatch logs via EventBridge, including metadata like ARN, timestamp, and status.  
+
+Covers both deployment-phase and operational-phase state changes in one test.
