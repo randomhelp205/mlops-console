@@ -1,0 +1,49 @@
+Here are suggested test case names for monitoring SageMaker AI events in CloudWatch via EventBridge, based on your user story requirements:
+
+### SageMaker Endpoint Test Cases
+1. "Verify SageMaker endpoint deployment state change events are captured in CloudWatch Logs"
+2. "Validate SageMaker endpoint state change events appear in CloudWatch Logs when status changes"
+
+### Feature Group Test Cases
+3. "Confirm SageMaker feature group state change events are logged to CloudWatch"
+
+### Hyperparameter Tuning Test Cases
+4. "Test hyperparameter tuning job state changes are monitored via EventBridge to CloudWatch"
+
+### HyperPod Test Cases
+5. "Verify HyperPod cluster node health events are captured in CloudWatch Logs"
+6. "Validate HyperPod cluster state change events appear in monitoring logs"
+
+### Image/Version Test Cases
+7. "Test SageMaker image state change events are logged to CloudWatch"
+8. "Confirm image version state changes trigger EventBridge to CloudWatch logging"
+
+### Model Test Cases
+9. "Verify model card state changes generate CloudWatch log entries"
+10. "Validate model package state change events appear in CloudWatch"
+11. "Test model creation/update state changes are captured in monitoring logs"
+
+### Pipeline Test Cases
+12. "Confirm pipeline execution state changes trigger EventBridge to CloudWatch"
+13. "Verify pipeline step state changes are logged to CloudWatch"
+
+### Job Execution Test Cases
+14. "Test processing job state changes appear in CloudWatch Logs"
+15. "Validate training job state change events are captured"
+16. "Confirm transform job state changes generate CloudWatch log entries"
+
+### API Call Test Cases
+17. "Verify SageMaker API calls are logged via CloudTrail"
+18. "Validate critical API operations appear in CloudTrail logs"
+
+### General Monitoring Test Cases
+19. "Confirm EventBridge rules properly forward all SageMaker events to CloudWatch"
+20. "Test log group retention policy maintains logs for required duration"
+
+Each test case would involve:
+1. Creating/triggering the relevant SageMaker resource/action
+2. Verifying the event appears in the correct CloudWatch log group
+3. Validating the event contains all required metadata
+4. (For API tests) Confirming CloudTrail captures the API call
+
+Would you like me to elaborate on any specific test case with detailed steps or validation criteria?
