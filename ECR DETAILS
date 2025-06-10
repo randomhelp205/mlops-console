@@ -1,0 +1,116 @@
+Here are the consolidated test cases for monitoring Amazon ECR events through CloudWatch and EventBridge:
+
+---
+
+### **1. ECR Repository Lifecycle Monitoring**  
+**Test Case**: *"Verify ECR repository creation/deletion events are captured in CloudWatch Logs"*  
+**Description**:  
+Validates repository lifecycle operations via EventBridge and CloudTrail.  
+**Covers**:  
+- `CreateRepository`/`DeleteRepository` API calls (CloudTrail)  
+- Encryption grant events (e.g., `KMSCreateGrant`)  
+- Repository state changes (EventBridge)  
+**Validation**:  
+- Repository ARN, region, and encryption status  
+- IAM role/user initiating action  
+- Timestamps for compliance  
+
+---
+
+### **2. ECR Image Push/Pull Monitoring**  
+**Test Case**: *"Validate image push/pull actions are logged with metadata"*  
+**Description**:  
+Tracks image transfers for security and performance baselining.  
+**Covers**:  
+- `PutImage`/`GetDownloadUrlForLayer` (CloudTrail)  
+- Image size, layers, and digest (EventBridge)  
+**Validation**:  
+- Source/destination IPs for pulls  
+- Image tags and SHA256 hashes  
+- Latency metrics for performance analysis  
+
+---
+
+### **3. ECR Image Scan & Vulnerability Monitoring**  
+**Test Case**: *"Verify image scan events and results appear in logs"*  
+**Description**:  
+Ensures vulnerability scans trigger alerts.  
+**Covers**:  
+- `StartImageScan`/`DescribeImageScanFindings` (CloudTrail)  
+- Scan status changes (EventBridge)  
+**Validation**:  
+- Scan completion/failure events  
+- Criticality counts (e.g., HIGH/CVE IDs)  
+- Automated remediation triggers  
+
+---
+
+### **4. ECR Lifecycle Policy Execution**  
+**Test Case**: *"Test lifecycle policy actions (expiry, cleanup) are logged"*  
+**Description**:  
+Audits automated image retention rules.  
+**Covers**:  
+- `LifecyclePolicyPreview` events (CloudTrail)  
+- Image expiry/deletion (EventBridge)  
+**Validation**:  
+- Policy match criteria (e.g., "untagged > 30d")  
+- Deleted image manifests  
+- Policy execution errors  
+
+---
+
+### **5. ECR Replication & Cache Monitoring**  
+**Test Case**: *"Validate cross-region replication and pull-through cache events"*  
+**Description**:  
+Tracks geo-replication and cache performance.  
+**Covers**:  
+- `ReplicationStatus` events (EventBridge)  
+- Cache hit/miss metrics  
+**Validation**:  
+- Source/destination regions  
+- Cache efficiency rates  
+- Bandwidth throttling events  
+
+---
+
+### **6. ECR API Auditing (CloudTrail)**  
+**Test Case**: *"Confirm all ECR API calls are logged in CloudTrail"*  
+**Description**:  
+Security-focused validation of control plane actions.  
+**Covers**:  
+- Console/CLI/SDK calls (e.g., `SetRepositoryPolicy`)  
+- Encryption/key policy changes  
+**Validation**:  
+- API name and parameters  
+- Unauthorized attempt logging  
+
+---
+
+### **7. EventBridge Routing & Retention**  
+**Test Case**: *"Test ECR events route to CloudWatch with retention enforcement"*  
+**Description**:  
+Infrastructure validation.  
+**Checks**:  
+- No dropped events (test 100+ concurrent pushes)  
+- Log retention = 90 days (compliance)  
+
+---
+
+### **Key Test Scenarios**:  
+| **Operation**               | **Event Source**       | **Critical Fields to Validate**                |  
+|-----------------------------|------------------------|-----------------------------------------------|  
+| Image push                  | CloudTrail + EventBridge | SHA256, image size, pusher IP                |  
+| Lifecycle policy execution  | EventBridge            | Deleted image list, policy ARN               |  
+| CVE scan failed             | EventBridge            | CVE IDs, scan timestamp, failure reason       |  
+| Cross-account pull          | CloudTrail             | Source account, IAM assumed role              |  
+
+**Implementation Example**:  
+```python  
+def test_ecr_image_scan_logs():  
+    scan_image("nginx:latest")  
+    logs = get_cloudwatch_logs("/aws/events/ecr-scans")  
+    assert "ScanStatus: COMPLETE" in logs  
+    assert "CVSSScore: 7.5" in logs  # Sample critical CVE  
+```  
+
+Let me know if you'd like to prioritize specific test cases (e.g., security-focused scans vs. performance metrics).
