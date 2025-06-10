@@ -1,0 +1,97 @@
+Here are the consolidated test cases for monitoring MLflow Tracking Server events through CloudWatch and EventBridge:
+
+---
+
+### **1. MLflow Tracking Server Lifecycle Monitoring**  
+**Test Case**: *"Verify MLflow Tracking Server lifecycle events are captured in CloudWatch Logs"*  
+**Description**:  
+Validates creation, updates, starts/stops, and deletion of MLflow Tracking Servers are properly logged.  
+
+**Covers Events**:  
+- `Creating` → `Created`/`Create Failed`  
+- `Updating` → `Updated`/`Update Failed`  
+- `Starting`/`Stopping` → `Started`/`Stopped` (or failed states)  
+- `Deleting` → `Deleted`/`Delete Failed`  
+
+**Validation**:  
+- Server ARN, status, timestamp, and IAM role in logs  
+- Error details for failed states  
+
+---
+
+### **2. MLflow Tracking Server Maintenance Monitoring**  
+**Test Case**: *"Validate maintenance events for MLflow Tracking Servers appear in logs"*  
+**Description**:  
+Tests logging of maintenance operations (upgrades, patches).  
+
+**Covers Events**:  
+- `Maintenance In Progress` → `Complete`/`Failed`  
+
+**Validation**:  
+- Maintenance window timestamps  
+- Failure reasons (if applicable)  
+
+---
+
+### **3. MLflow Model/Experiment Operations Monitoring**  
+**Test Case**: *"Verify MLflow experiment/model events are logged"*  
+**Description**:  
+Ensures tracking of MLflow-specific operations: runs, model versions, and aliases.  
+
+**Covers Events**:  
+- `Creating Run`  
+- `Creating RegisteredModel`/`ModelVersion`  
+- `Transitioning ModelVersion Stage`  
+- `Setting RegisteredModel Alias`  
+
+**Validation**:  
+- Experiment/model IDs and versions  
+- Stage transitions (e.g., Staging → Production)  
+- Alias mappings  
+
+---
+
+### **4. MLflow API Call Auditing (CloudTrail)**  
+**Test Case**: *"Confirm critical MLflow API calls are logged in CloudTrail"*  
+**Description**:  
+Validates CloudTrail captures management API calls.  
+
+**Covers APIs**:  
+- `Create/Describe/Update/DeleteMlflowTrackingServer`  
+- `Start/StopMlflowTrackingServer`  
+- `CreatePresignedMlflowTrackingServer`  
+
+**Validation**:  
+- API name, caller identity, and timestamp  
+- Request/response parameters  
+
+---
+
+### **5. EventBridge Routing & Log Retention**  
+**Test Case**: *"Test EventBridge routes all MLflow events to CloudWatch with proper retention"*  
+**Description**:  
+Validates infrastructure setup.  
+
+**Checks**:  
+- No dropped events (test with all event types)  
+- Log retention policy enforcement (e.g., 30 days)  
+
+---
+
+### **Key Benefits**:  
+1. **Full Coverage**: Combines related events (e.g., all lifecycle states) into single test cases.  
+2. **Efficiency**: Reduces redundancy (e.g., separate "Created"/"Create Failed" validations merged).  
+3. **Compliance Focus**: Explicitly tests security-critical areas (API auditing, retention).  
+
+**Example Test Execution**:  
+```python  
+# Pseudocode for testing server creation  
+def test_mlflow_server_creation_logs():  
+    create_server()  
+    logs = get_cloudwatch_logs()  
+    assert "Tracking Server Creating" in logs  
+    assert "Tracking Server Created" in logs  
+    assert_log_fields(logs, expected_arn, expected_iam_role)  
+```  
+
+Let me know if you'd like to adjust granularity (e.g., split model operations into separate cases)!
