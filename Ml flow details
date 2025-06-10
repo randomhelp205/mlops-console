@@ -1,0 +1,93 @@
+Here's a clear mapping of which **MLflow Tracking Server events** fall under each test case, categorized for easy reference:
+
+---
+
+### **1. MLflow Tracking Server Lifecycle Monitoring**  
+**Events Covered**:  
+- `SageMaker Tracking Server Creating`  
+- `SageMaker Tracking Server Created`  
+- `SageMaker Tracking Server Create Failed`  
+- `SageMaker Tracking Server Updating`  
+- `SageMaker Tracking Server Updated`  
+- `SageMaker Tracking Server Update Failed`  
+- `SageMaker Tracking Server Deleting`  
+- `SageMaker Tracking Server Deleted`  
+- `SageMaker Tracking Server Delete Failed`  
+- `SageMaker Tracking Server Starting`  
+- `SageMaker Tracking Server Started`  
+- `SageMaker Tracking Server Start Failed`  
+- `SageMaker Tracking Server Stopping`  
+- `SageMaker Tracking Server Stopped`  
+- `SageMaker Tracking Server Stop Failed`  
+
+**Scope**:  
+All **infrastructure lifecycle events** (creation, updates, starts/stops, deletions).  
+
+---
+
+### **2. MLflow Tracking Server Maintenance Monitoring**  
+**Events Covered**:  
+- `SageMaker Tracking Server Maintenance In Progress`  
+- `SageMaker Tracking Server Maintenance Complete`  
+- `SageMaker Tracking Server Maintenance Failed`  
+
+**Scope**:  
+Scheduled/unscheduled **maintenance operations** (e.g., patches, upgrades).  
+
+---
+
+### **3. MLflow Model/Experiment Operations Monitoring**  
+**Events Covered**:  
+- `SageMaker MLFlow Tracking Server Creating Run`  
+- `SageMaker MLFlow Tracking Server Creating RegisteredModel`  
+- `SageMaker MLFlow Tracking Server Creating ModelVersion`  
+- `SageMaker MLFlow Tracking Server Transitioning ModelVersion Stage`  
+- `SageMaker MLFlow Tracking Server Setting RegisteredModel Alias`  
+
+**Scope**:  
+**MLflow-specific activities** (experiment runs, model registry changes, aliases).  
+
+---
+
+### **4. MLflow API Call Auditing (CloudTrail)**  
+**APIs Covered**:  
+- `CreateMlflowTrackingServer`  
+- `DescribeMlflowTrackingServer`  
+- `UpdateMlflowTrackingServer`  
+- `DeleteMlflowTrackingServer`  
+- `ListMlflowTrackingServers`  
+- `CreatePresignedMlflowTrackingServer`  
+- `StartMlflowTrackingServer`  
+- `StopMlflowTrackingServer`  
+
+**Scope**:  
+**Control-plane API calls** (management operations via AWS SDK/CLI/Console).  
+
+---
+
+### **5. EventBridge Routing & Log Retention**  
+**Events Covered**:  
+- **All events listed above** (validates they are routed to CloudWatch).  
+
+**Scope**:  
+Infrastructure reliability (no dropped events) and **compliance** (log retention).  
+
+---
+
+### **Summary Table**  
+| Test Case                              | Event Types Covered                                                                 | Source          |
+|----------------------------------------|------------------------------------------------------------------------------------|-----------------|
+| Lifecycle Monitoring                   | Server Creating/Created/Failed, Updating/Updated/Failed, Starting/Stopping, etc.   | **EventBridge** |
+| Maintenance Monitoring                 | Maintenance In Progress/Complete/Failed                                            | **EventBridge** |
+| Model/Experiment Operations Monitoring | Creating Runs/Models, Transitioning Stages, Setting Aliases                        | **EventBridge** |
+| API Call Auditing                      | `Create/Describe/Update/DeleteMlflowTrackingServer`, etc.                          | **CloudTrail**  |
+| Infrastructure Validation              | All EventBridge events + retention checks                                          | Both            |
+
+---
+
+### **Key Notes**:  
+1. **EventBridge Events**: Used for **real-time operational monitoring** (e.g., server status changes).  
+2. **CloudTrail Logs**: Used for **audit/compliance** (who did what, when).  
+3. **Overlap**: Some events (e.g., `CreateMlflowTrackingServer` API) may appear in both CloudTrail (API call) and EventBridge (resulting state change).  
+
+Let me know if you'd like to further refine categories!
