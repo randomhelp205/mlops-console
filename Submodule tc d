@@ -1,0 +1,44 @@
+You're welcome, Akhil! Here's a **clear and concise test case description** for each of the 5 core test cases based on the categories we defined earlier:
+
+---
+
+## ✅ **Test Case Descriptions**
+
+---
+
+### **🧪 Test Case 1: Validate CloudWatch Log Group Creation for SageMaker in Model Build A/C**
+
+**Description:**
+This test case verifies whether the CloudWatch log group for SageMaker is correctly created in the Model Build account using the Terraform submodule. It ensures that the log group follows the defined naming convention and is provisioned without any configuration errors.
+
+---
+
+### **🧪 Test Case 2: Validate Logs Are Forwarded from Source to Governance Account**
+
+**Description:**
+This test case confirms that logs generated in the Model Build account (e.g., from SageMaker or Lambda) are successfully forwarded to the centralized CloudWatch setup in the Governance account. It validates the correctness of subscription filters or destinations such as Firehose/Kinesis and verifies the real-time availability of logs in the Governance account.
+
+---
+
+### **🧪 Test Case 3: Verify Log Group Tagging for Source Identification**
+
+**Description:**
+This test case ensures that all CloudWatch log groups created in the source accounts (Model Build, Pre Deploy, Deploy) are properly tagged with metadata such as environment name, source account ID, and service name. These tags are critical for filtering and identifying logs in the centralized Governance account.
+
+---
+
+### **🧪 Test Case 4: Trigger SageMaker Job and Validate Logs are Captured**
+
+**Description:**
+This test case verifies that running a SageMaker training or inference job results in proper logging to CloudWatch. It ensures that SageMaker logs are written to the expected log group in the Model Build account and are visible in the Governance account as part of the centralized logging strategy.
+
+---
+
+### **🧪 Test Case 5: Search Logs from Model Build Account in Governance Console**
+
+**Description:**
+This test case confirms that a Platform Admin can search and access logs originating from the Model Build account using the CloudWatch Logs Insights console in the Governance account. It validates that logs are correctly forwarded, tagged, and queryable, supporting centralized observability and auditability.
+
+---
+
+Would you like me to organize these into a table format or export them into a document (Markdown, Excel, etc.)?
