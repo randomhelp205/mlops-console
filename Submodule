@@ -1,0 +1,93 @@
+Yes, I grouped the test cases into 5 categories based on the user story. Here's a **consolidated version** where **one representative test case** is written for each of the 5 categories — giving you a **total of 5 key test cases**, each covering a core requirement of the story.
+
+---
+
+## ✅ **Top 5 Test Cases Based on Categories**
+
+---
+
+### 🔹 **1. CloudWatch Log Group Submodule Creation**
+
+**Test Case 1: Validate CloudWatch Log Group Creation for SageMaker in Model Build A/C**
+
+* **Preconditions:** Terraform submodule for CloudWatch log groups is available and configured.
+* **Test Steps:**
+
+  1. Deploy the Terraform module in the Model Build account.
+  2. Navigate to AWS Console → CloudWatch → Log Groups.
+  3. Search for a log group matching `/aws/sagemaker/*`.
+* **Expected Result:**
+
+  * Log group for SageMaker exists with proper naming.
+  * Terraform apply completes without error.
+* **Objective:** Ensure log groups are provisioned as expected by the Terraform module.
+
+---
+
+### 🔹 **2. Cross-Account Log Sharing to Governance Account**
+
+**Test Case 2: Validate Logs Are Forwarded from Source to Governance Account**
+
+* **Preconditions:** Subscription filter or log destination is configured to forward logs to Governance account.
+* **Test Steps:**
+
+  1. Trigger an event in the Model Build account (e.g., SageMaker job or Lambda execution).
+  2. Check CloudWatch in the Governance account for incoming logs.
+* **Expected Result:**
+
+  * Logs from the source account appear in the Governance account.
+  * Destination ARN (e.g., Kinesis, Firehose) is correct.
+* **Objective:** Confirm that cross-account log forwarding is working.
+
+---
+
+### 🔹 **3. Source Account Tagging**
+
+**Test Case 3: Verify Log Group Tagging for Source Identification**
+
+* **Preconditions:** Log group tagging is enabled in the Terraform module.
+* **Test Steps:**
+
+  1. Go to the AWS Console → CloudWatch → Log Groups in the Model Build account.
+  2. Select a log group and check tags.
+* **Expected Result:**
+
+  * Tags such as `Environment`, `SourceAccountId`, and `ServiceName` are attached.
+* **Objective:** Allow log filtering in the Governance account using tags.
+
+---
+
+### 🔹 **4. Service-Specific Logging Verification**
+
+**Test Case 4: Trigger SageMaker Job and Validate Logs are Captured**
+
+* **Preconditions:** SageMaker job logs are configured to write to CloudWatch.
+* **Test Steps:**
+
+  1. Trigger a SageMaker training job in the Model Build account.
+  2. Check that logs are generated in `/aws/sagemaker/*` log group.
+  3. Confirm they are visible in the Governance account.
+* **Expected Result:**
+
+  * Job logs appear in both source and Governance accounts.
+* **Objective:** Validate that service-specific events (SageMaker) are correctly logged and forwarded.
+
+---
+
+### 🔹 **5. Governance Account Access Validation**
+
+**Test Case 5: Search Logs from Model Build Account in Governance Console**
+
+* **Preconditions:** Logs are already forwarded and tagged properly.
+* **Test Steps:**
+
+  1. Go to the CloudWatch Logs Insights in the Governance account.
+  2. Run a query filtered by `source_account_id = <Model Build Account ID>`.
+* **Expected Result:**
+
+  * Query returns relevant logs from the Model Build account.
+* **Objective:** Ensure the Platform Admin can view and query logs from any source account in a centralized manner.
+
+---
+
+Would you like this in a **test case document format** (Excel/Markdown/CSV)? Or should I help you **automate these tests using AWS CLI or Terraform validation logic**?
